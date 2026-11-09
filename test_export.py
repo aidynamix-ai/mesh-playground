@@ -27,6 +27,10 @@ def test_value_with_crlf_is_quoted():
     assert export.export_csv([{"a": "top\r\nbottom", "b": "c"}]) == 'a,b\n"top\r\nbottom",c'
 
 
+def test_value_with_carriage_return_is_quoted():
+    assert export.export_csv([{"a": "a\rb", "b": "c"}]) == 'a,b\n"a\rb",c'
+
+
 def test_multiple_rows_in_list_order():
     rows = [
         {"a": "1", "b": "x"},
@@ -58,6 +62,7 @@ for _test in (
     test_value_with_double_quotes_is_doubled,
     test_value_with_newline_is_quoted,
     test_value_with_crlf_is_quoted,
+    test_value_with_carriage_return_is_quoted,
     test_multiple_rows_in_list_order,
     test_non_string_scalars_render_via_str,
     test_no_trailing_newline,
