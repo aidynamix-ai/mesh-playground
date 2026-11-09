@@ -7,6 +7,14 @@ def test_header_key_order_and_bare_values():
     assert export.export_csv([{"a": "1", "b": "x"}]) == "a,b\n1,x"
 
 
+def test_header_row_equals_first_row_keys_insertion_order():
+    row = {"z": 1, "m": 2, "a": 3}
+    out = export.export_csv([row])
+    header = out.split("\n", 1)[0]
+    assert header == ",".join(row.keys())
+    assert out == "z,m,a\n1,2,3"
+
+
 def test_empty_input():
     assert export.export_csv([]) == ""
 
@@ -57,6 +65,7 @@ def test_header_keys_use_same_quoting_rule():
 
 for _test in (
     test_header_key_order_and_bare_values,
+    test_header_row_equals_first_row_keys_insertion_order,
     test_empty_input,
     test_value_with_comma_is_quoted,
     test_value_with_double_quotes_is_doubled,
